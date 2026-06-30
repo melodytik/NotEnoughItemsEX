@@ -19,30 +19,52 @@ public abstract class LayoutStyleDefault extends LayoutStyle
 
         reset();
 
+        // Calculate effective item panel area (right-aligned)
+        int guiRight = (containerWidth + windowWidth) / 2;
+        int panelLeftEdge = guiRight + 2;
+        int panelRightEdge = windowWidth - 2;
+        int fullPanelWidth = panelRightEdge - panelLeftEdge;
+
+        // Calculate effective columns based on column limit setting
+        int availCols = fullPanelWidth / 18;
+        int maxCols = NEIClientConfig.getItemPanelColumns();
+        int effectiveCols = (maxCols > 0 && maxCols < availCols) ? maxCols : availCols;
+        int effectiveWidth = effectiveCols * 18;
+
+        // Right-align the effective panel area
+        int effectiveLeft = panelRightEdge - effectiveWidth;
+
+        // Page navigation buttons - sized to match effective item width
+        int buttonW = Math.max(effectiveWidth / 3, 16);
+        if (buttonW * 2 > effectiveWidth - 2)
+            buttonW = Math.max((effectiveWidth - 2) / 2, 8);
+
         prev.y = 2;
         prev.h = 16;
-        prev.w = containerLeft / 3;
-        prev.x = (containerWidth + windowWidth) / 2 + 2;
-        next.x = windowWidth - prev.w - 2;
+        prev.w = buttonW;
+        prev.x = effectiveLeft;
 
+        next.x = panelRightEdge - buttonW;
         next.y = prev.y;
-        next.w = prev.w;
+        next.w = buttonW;
         next.h = prev.h;
-        pageLabel.x = containerLeft * 3 / 2 + containerWidth + 1;
+
+        // Page label centered between prev and next
+        pageLabel.x = (prev.x + prev.w + next.x) / 2;
         pageLabel.y = prev.y + 5;
         pageLabel.text = "(" + itemPanel.getPage() + "/" + itemPanel.getNumPages() + ")";
 
         itemPanel.y = prev.h + prev.y;
-        itemPanel.x = (containerWidth + windowWidth) / 2 + 3;
-        itemPanel.w = windowWidth - 3 - itemPanel.x;
+        itemPanel.x = effectiveLeft;
+        itemPanel.w = effectiveWidth;
         itemPanel.h = windowHeight - 15 - itemPanel.y;
         if (!canPerformAction("item"))
             itemPanel.h += 15;
         itemPanel.resize();
 
         more.w = more.h = less.w = less.h = 16;
-        less.x = prev.x;
-        more.x = windowWidth - less.w - 2;
+        less.x = effectiveLeft;
+        more.x = panelRightEdge - less.w;
         more.y = less.y = windowHeight - more.h - 2;
 
         quantity.x = less.x + less.w + 2;

@@ -1,9 +1,12 @@
 buildscript {
     repositories {
-        mavenCentral()
+        maven {
+            name = "central"
+            url = "https://repo1.maven.org/maven2/"
+        }
         maven {
             name = "forge"
-            url = "http://files.minecraftforge.net/maven"
+            url = "https://maven.minecraftforge.net/"
         }
         maven {
             name = "sonatype"
@@ -18,8 +21,12 @@ buildscript {
 //add dependency repositories
 repositories {
 	maven {
+		name = "central"
+		url = "https://repo1.maven.org/maven2/"
+	}
+	maven {
 		name = "chickenbones"
-		url = "http://chickenbones.net/maven"
+		url = "https://chickenbones.net/maven/"
 	}
 }
 

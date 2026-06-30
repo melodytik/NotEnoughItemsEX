@@ -129,6 +129,9 @@ public class NEIClientConfig
         tag.getTag("inventory.searchmode").getIntValue(1);
         API.addOption(new OptionCycled("inventory.searchmode", 3, true));
 
+        tag.getTag("inventory.itempanelcols").getIntValue(0);
+        API.addOption(new OptionCycled("inventory.itempanelcols", 13, true));
+
         tag.getTag("world.highlight_tips").getBooleanValue(false);
         tag.getTag("world.highlight_tips.x").getIntValue(5000);
         tag.getTag("world.highlight_tips.y").getIntValue(100);
@@ -340,6 +343,14 @@ public class NEIClientConfig
 
     public static int getLayoutStyle() {
         return getIntSetting("inventory.layoutstyle");
+    }
+
+    /**
+     * Returns the maximum number of columns to display in the item panel.
+     * 0 means Auto (use all available width).
+     */
+    public static int getItemPanelColumns() {
+        return getIntSetting("inventory.itempanelcols");
     }
 
     public static String getStringSetting(String s) {

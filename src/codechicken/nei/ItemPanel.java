@@ -59,9 +59,13 @@ public class ItemPanel extends Widget
     public void resize() {
         items = _items;
 
-        marginLeft = x + (w % 18) / 2;
-        marginTop = y + (h % 18) / 2;
         columns = w / 18;
+        int maxCols = NEIClientConfig.getItemPanelColumns();
+        if (maxCols > 0 && columns > maxCols) {
+            columns = maxCols;
+        }
+        marginLeft = x + w - columns * 18;
+        marginTop = y + (h % 18) / 2;
         rows = h / 18;
         //sometimes width and height can be negative with certain resizing
         if(rows < 0) rows = 0;
